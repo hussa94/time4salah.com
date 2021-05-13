@@ -1,0 +1,37 @@
+/* #Fajr .ptitle{
+    color:firebrick;
+}
+#Fajr .ptime{
+    color:darkgrey;
+}
+#Sunrise .ptitle{
+    color:darkgrey;
+}
+#Sunrise .ptime{
+    color:darkgrey;
+}
+#Maghrib .ptitle{
+    color:darkgrey;
+}
+#Maghrib .ptime{
+    color:firebrick;
+}
+#Isha .ptitle{
+    color:firebrick;
+}
+#Isha .ptime{
+    color:darkgrey;
+} */
+
+.ptitle{
+    font-weight: bolder;
+    color:black;
+    font-size: 5vw;
+}
+
+.ptime{
+    color:black;
+    font-size: 5vw;
+    font-style: italic;
+    font-weight: bold;
+}
