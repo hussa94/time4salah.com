@@ -1,4 +1,4 @@
-const cacheName = 'time4salahv1';
+const cacheName = 'time4salahv3';
 self.addEventListener("install", e=>{
     e.waitUntil(
         caches.open(cacheName).then(cache =>{

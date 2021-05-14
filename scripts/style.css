@@ -19,7 +19,11 @@
 
 }
 
-#ct, #hijriDate{
+#Eid{
+    background: linear-gradient(to right, #56ab2f, #a8e063);
+}
+
+#ct, #hijriDate, #b786, #Eid, #np{
     font-size: 5vw;
 }
 
@@ -34,5 +38,3 @@ body{
 .row{
     margin: 0;
 }
-
-

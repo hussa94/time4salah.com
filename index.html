@@ -2,6 +2,8 @@
     <head>
         <title>Masjid Prayer Timetable</title>
 
+        <meta charset="UTF-8">
+
         <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -33,17 +35,17 @@
             </style>
 
     </head>
-    <body style="background-color: #40F99B;" onload="display_ct();parseCSV();">
+    <body style="background-color: #40F99B;" onload="display_ct();">
         <script src="scripts/index.js"></script>
-        <div class="main">
-            <div class="row">
-                <span id='ct' class="btn btn-info btn-lg"></span>
-            </div>
-            <div class="row">
-                <span id='hijriDate' class="btn btn-success btn-lg"></span>
-            </div>
-            
-        
+    <div class="main">
+
+        <div class="row">
+            <span id='b786' class="btn btn-warning btn-lg">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</span>
+            <span id='hijriDate' class="btn btn-success btn-lg"></span>
+            <span id='ct' class="btn btn-info btn-lg"></span>    
+            <span id='np' class="btn btn-danger btn-lg"></span>    
+        </div>
+
         <div class="row">
             <div class="col-md-4 col-sm-6" id="Fajr">Fajr Time</div>
             <div class="col-md-4 col-sm-6" id="Sunrise">Sunrise Time</div>
@@ -52,9 +54,13 @@
             <div class="col-md-4 col-sm-6" id="Maghrib">Maghrib Time</div>
             <div class="col-md-4 col-sm-6" id="Isha">Isha Time</div>
         </div>
+        <div id="eidDiv" style="display: none;">
+            <div id="Eid" style="text-align: center;">Eid Mubarak | عيد مبارك</div>
+        </div>
     </div>
+    
     <footer>
-        <p>
+        <p style="float:right">
         <a style="color:white" href="https://husyn.app">Created by HUSYN.APP <img src="images/husyn.ico" alt="logo"></a></p>
     </footer>
 </html>
