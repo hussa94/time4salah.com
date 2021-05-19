@@ -19,12 +19,13 @@
 
 }
 
-#Eid{
-    background: linear-gradient(to right, #56ab2f, #a8e063);
+#Eid, #hadith{
+    background: linear-gradient(to right, #02aab0, #a8e063);
+    font-size: 3vh;
 }
 
 #ct, #hijriDate, #b786, #Eid, #np{
-    font-size: 5vw;
+    font-size: 5vh;
 }
 
 body{

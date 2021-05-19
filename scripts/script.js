@@ -1,4 +1,6 @@
-var todayData = []
+var GprayerTime;
+var dateLastParsed;
+var HadithText;
 
 function display_c(){
     var refresh=1000; // Refresh rate in milli seconds
@@ -7,9 +9,13 @@ function display_c(){
 }
 
 function display_ct() {
-    var x = moment().format('LLLL');
-    parseCSV();
-    document.getElementById('ct').innerHTML = x;
+    var currentDate = new Date().getDate();
+    if (dateLastParsed != currentDate){
+        parseCSV();
+    }
+    displayTimeRemaining(GprayerTime);
+    var currentMomentString =  moment().format('LLLL');
+    document.getElementById('ct').innerHTML = currentMomentString;
     display_c();
 }
 
@@ -19,12 +25,15 @@ function displayTimeRemaining(data) {
     data.forEach(function(item) {
         Object.keys(item).forEach(function(key) {
             if(key == "Sunrise"){return};
+            if(key == "Fajr2"){
+                currentTime.setDate(currentTime.getDate()+1)
+            }
             currentTime.setHours(item[key].substring(0,2));
             currentTime.setMinutes(item[key].substring(3,5));
             currentTime.setSeconds(0);
             times.push(currentTime);
             currentTime = new Date();
-            });    
+            });
         });
 
         times.sort(function(a, b) {
@@ -32,21 +41,24 @@ function displayTimeRemaining(data) {
             var distanceb = Math.abs(currentTime - b);
             return distancea - distanceb; // sort a before b when the distance is smaller
         });
-        
+
         var nextTime = new Date();
         nextTime = times.filter(function(d) {
             return d - currentTime > 0;
         });
 
+        // console.log(times)
+
         var timeleft = nextTime[0] - currentTime;
 
-        // console.log(nextTime[0]);
+        // console.log(nextTime);
+        //("0" + myNumber).slice(-2);
 
         var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
 
-    document.getElementById("np").innerHTML = `NEXT SALAH IN: ${hours}:${minutes}:${seconds}`;
+    document.getElementById("np").innerHTML = `NEXT SALAH IN: ${("0" + hours).slice(-2)}:${("0" + minutes).slice(-2)}:${("0" + seconds).slice(-2)}`;
 }
 
 
@@ -58,8 +70,8 @@ function filterByDate(date, data){
         //console.log(data);
         var filtered = data.filter(function(el) {
             return el.datereadable === dd;
-          });   
-        return filtered;  
+          });
+        return filtered;
 }
 
 function getCurrentMonthFileName(){
@@ -92,10 +104,10 @@ function displayTimings(obj){
             var div = document.getElementById(key);
             var divT = '';
             if(isFriday && key == "Zuhr"){
-                divT = `<span> <p class="ptitle"> Jummah </p> 
+                divT = `<span> <p class="ptitle"> Jummah </p>
                 <p class="ptime"> ${item[key]} </p></span>`
             }else{
-            divT = `<span> <p class="ptitle"> ${key} </p> 
+            divT = `<span> <p class="ptitle"> ${key} </p>
                         <p class="ptime"> ${item[key]} </p></span>`
                     }
             if (key != "Fajr2") {div.innerHTML = divT;}
@@ -107,21 +119,68 @@ function displayTimings(obj){
 
 function parseCSV(){
     var csvSrc = "data/"+ getCurrentMonthFileName();
+    var hadithNo = getNumberOfDays("2021-05-19",new Date());
+    getHadith(hadithNo);
     d3.csv(csvSrc).then(function(data){
         var today = new Date();
+        dateLastParsed = today.getDate();
         var filtered = filterByDate(today, data);
+        // varTodaysData = filtered;
         var tomorrow = filterByDate(today.setDate(today.getDate()+ 1), data);
 
         addHijriDate(filtered);
-        
+
         prayertime = [{"Fajr": filtered[0].timingsFajr.substring(0,5)},{"Sunrise":filtered[0].timingsSunrise.substring(0,5)},
                         {"Zuhr":filtered[0].timingsDhuhr.substring(0,5)},{"Asr": filtered[0].timingsAsr.substring(0,5)},
                     {"Maghrib": filtered[0].timingsMaghrib.substring(0,5)}, {"Isha":filtered[0].timingsIsha.substring(0,5)},
                     {"Fajr2":tomorrow[0].timingsFajr}];
 
         displayTimings(prayertime);
-        displayTimeRemaining(prayertime);
+        GprayerTime = prayertime;
         }
-        
     )
+    display_c();
+}
+
+
+function getHadith(number){
+    let request = new XMLHttpRequest();
+    var url = 'https://api.sunnah.com/v1/collections/riyadussalihin/hadiths/' + number;
+    request.open("GET", url);
+    request.setRequestHeader("x-api-key","SqD712P3E82xnwOAEOkGd5JZH8s9wRR24TqNFzjk");
+    request.withCredentials = true;
+    request.send();
+    request.onload = ()=>{
+    // console.log(request);
+    if(request.status == 200){
+    //   console.log(JSON.parse(request.response));
+      HadithText = JSON.parse(request.response);
+      var hadithDiv = HadithText.hadith[1].body;
+      var english = HadithText.hadith[0].body.replaceAll("<br/>","").replace("<b>", "<br/> <b>");
+    //   console.log(english);
+      hadithDiv += english;
+      document.getElementById("hadith").innerHTML = hadithDiv;
+    }else{
+      console.log(`error ${request.status} ${request.statusText}`)
+      var error = `Error returning hadith from server, please contact administrator at www.husyn.app`
+      error += request.statusText;
+      document.getElementById("hadith").innerHTML = error;
+      }
+    }
+  }
+
+  function getNumberOfDays(start, end) {
+    const date1 = new Date(start);
+    const date2 = new Date(end);
+
+    // One day in milliseconds
+    const oneDay = 1000 * 60 * 60 * 24;
+
+    // Calculating the time difference between two dates
+    const diffInTime = date2.getTime() - date1.getTime();
+
+    // Calculating the no. of days between two dates
+    const diffInDays = Math.round(diffInTime / oneDay);
+
+    return diffInDays;
 }

@@ -35,15 +35,17 @@
             </style>
 
     </head>
-    <body style="background-color: #40F99B;" onload="display_ct();">
+    <body style="background-color: #40F99B;" onload="parseCSV();">
         <script src="scripts/index.js"></script>
-    <div class="main">
+    <div class="main site-container">
 
         <div class="row">
-            <span id='b786' class="btn btn-warning btn-lg">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</span>
-            <span id='hijriDate' class="btn btn-success btn-lg"></span>
-            <span id='ct' class="btn btn-info btn-lg"></span>    
-            <span id='np' class="btn btn-danger btn-lg"></span>    
+            <span id='b786' class="btn btn-warning btn-lg  col-md-6 col-sm-12">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</span>
+            <span id='hijriDate' class="btn btn-success btn-lg  col-md-6 col-sm-12"></span>
+        </div>
+        <div class="row">    
+            <span id='ct' class="btn btn-info btn-lg  col-md-6 col-sm-12"></span>    
+            <span id='np' class="btn btn-danger btn-lg col-md-6 col-sm-12"></span>    
         </div>
 
         <div class="row">
@@ -54,8 +56,12 @@
             <div class="col-md-4 col-sm-6" id="Maghrib">Maghrib Time</div>
             <div class="col-md-4 col-sm-6" id="Isha">Isha Time</div>
         </div>
+        <div class="row">
+        <div id="hadith" style="text-align: center;"></div>
+        
         <div id="eidDiv" style="display: none;">
             <div id="Eid" style="text-align: center;">Eid Mubarak | عيد مبارك</div>
+        </div>
         </div>
     </div>
     
